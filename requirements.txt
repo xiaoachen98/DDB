@@ -1,0 +1,10 @@
+pillow==9.0.1
+torch==1.8.1+cu111
+torchvision==0.9.1+cu111
+prettytable==2.1.0
+cityscapesscripts==2.2.0
+opencv-python==4.4.0.46
+timm==0.3.2
+kornia==0.5.8
+tensorboard==2.8.0
+scipy==1.8.0
