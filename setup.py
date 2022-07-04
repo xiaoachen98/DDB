@@ -91,7 +91,7 @@ if __name__ == "__main__":
         description="Domain Adaptive Semantic Segmentation Benchmark",
         author="someone",
         author_email="someone",
-        packages=find_packages(exclude=("configs", "tools", "demo")),
+        packages=find_packages(exclude=("configs", "tools", "resources")),
         install_requires=install_requires,
         include_package_data=True,
         ext_modules=[],

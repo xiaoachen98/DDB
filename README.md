@@ -85,9 +85,9 @@ Then, you should prepare datasets as follows:
 cd DDB
 mkdir data
 # If you prepare the data at the first time, you should convert the data for validation
-python tools/convert_datasets/gta.py data/gta/ # Source domain
-python tools/convert_datasets/synscapes.py data/synscapes/ # Source domain
-python tools/convert_datasets/cityscapes.py data/cityscapes/
+python tools/convert_datasets/gta.py data/gta # Source domain
+python tools/convert_datasets/synscapes.py data/synscapes # Source domain
+python tools/convert_datasets/cityscapes.py data/cityscapes
 # convert mapillary to cityscape format and resize it for efficient validation
 python tools/convert_datasets/mapillary2cityscape.py data/mapillary/ \
 data/mapillary/cityscape_trainIdLabel --train_id # convert the format

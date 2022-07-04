@@ -1,2 +1,5 @@
-.idea/
-__pycache__/
+.idea
+__pycache__
+work_dirs
+data
+debug
