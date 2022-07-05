@@ -140,14 +140,14 @@ python tools/test.py {config} {weight} --eval mIoU
 
 Using following commands, you will receive two complementary teacher models (`cu_model` and `ca_model`)
 ```shell
-# Train on the region-path (using cross-domain cut-mix for domain bridging)
+# Train on the coarse region-path (using cross-domain cut-mix for domain bridging)
 python tools/train.py configs/gtav2cityscapes/r1_st_cu_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
-# Train on the class-path (using cross-domain class-mix for domain bridging)
+# Train on the fine class-path (using cross-domain class-mix for domain bridging)
 python tools/train.py configs/gtav2cityscapes/r1_st_ca_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
-# Train on the region-path (using cross-domain cut-mix for domain bridging) (Train with multiple GPUs)
-bash tools/dist_train.sh configs/gtav2cityscapes/r1_st_ca_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GPU_NUM=2
-# Train on the class-path (using cross-domain class-mix for domain bridging) (Train with multiple GPUs)
+# Train on the coarse region-path (using cross-domain cut-mix for domain bridging) (Train with multiple GPUs)
 bash tools/dist_train.sh configs/gtav2cityscapes/r1_st_cu_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GPU_NUM=2
+# Train on the fine class-path (using cross-domain class-mix for domain bridging) (Train with multiple GPUs)
+bash tools/dist_train.sh configs/gtav2cityscapes/r1_st_ca_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GPU_NUM=2
 ```
 
 ### Step 2 on Round 1
@@ -165,9 +165,9 @@ DDB
 ```
 If you want to use adaptive ensemble technique for cross-path knowledge distillation (CKD). You should run:
 ```shell
-# Generating prototypes for the region-path teacher on target domain
+# Generating prototypes for the coarse region-path teacher on target domain
 python tools/cal_prototypes/cal_prototype.py {CU_MODEL_CONFIG_DIR} --checkpoint={CU_MODEL_CHECKPOINT_DIR}
-# Generating prototypes for the region-path teacher on target domain
+# Generating prototypes for the fine class-path teacher on target domain
 python tools/cal_prototypes/cal_prototype.py {CA_MODEL_CONFIG_DIR} --checkpoint={CA_MODEL_CHECKPOINT_DIR}
 ```
 Then, you can run the following command for CKD:
@@ -201,9 +201,9 @@ DDB
 ```
 If you want to use adaptive ensemble technique for cross-path knowledge distillation (CKD). You should run:
 ```shell
-# Generating prototypes for the region-path teacher on target domain
+# Generating prototypes for the coarse region-path teacher on target domain
 python tools/cal_prototypes/cal_prototype.py {CU_MODEL_CONFIG_DIR} --checkpoint={CU_MODEL_CHECKPOINT_DIR}
-# Generating prototypes for the region-path teacher on target domain
+# Generating prototypes for the fine class-path teacher on target domain
 python tools/cal_prototypes/cal_prototype.py {CA_MODEL_CONFIG_DIR} --checkpoint={CA_MODEL_CHECKPOINT_DIR}
 ```
 Then, you can run the following command for CKD:
