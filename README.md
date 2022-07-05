@@ -112,7 +112,7 @@ DDB
 │   │   │   ├── val
 │   ├── mapillary
 │   │   ├── training
-│   │   ├── cityscape_trainIdLabel
+│   │   ├── cityscapes_trainIdLabel
 │   │   ├── half
 │   │   │   ├── val_img
 │   │   │   ├── val_label
