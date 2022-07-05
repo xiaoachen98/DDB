@@ -89,10 +89,10 @@ python tools/convert_datasets/gta.py data/gta # Source domain
 python tools/convert_datasets/synscapes.py data/synscapes # Source domain
 python tools/convert_datasets/cityscapes.py data/cityscapes
 # convert mapillary to cityscape format and resize it for efficient validation
-python tools/convert_datasets/mapillary2cityscape.py data/mapillary/ \
-data/mapillary/cityscape_trainIdLabel --train_id # convert the format
+python tools/convert_datasets/mapillary2cityscape.py data/mapillary \
+data/mapillary/cityscapes_trainIdLabel --train_id # convert the format
 python tools/convert_datasets/mapillary_resize.py data/mapillary/validation/images \
-data/mapillary/cityscape_trainIdLabel/val/label data/mapillary/half/val_img \
+data/mapillary/cityscapes_trainIdLabel/val/label data/mapillary/half/val_img \
 data/mapillary/half/val_label # resize the validation data
 ```
 
