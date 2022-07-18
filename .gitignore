@@ -3,3 +3,5 @@ __pycache__
 work_dirs
 data
 debug
+checkpoints
+prototypes
