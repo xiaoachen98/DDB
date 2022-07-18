@@ -59,7 +59,7 @@ class UDAEncoderDecoder(EncoderDecoder):
         return out
 
     def forward_train(
-            self, img, img_metas, gt_semantic_seg, seg_weight=None, return_logits=False
+            self, img, img_metas, gt_semantic_seg, seg_weight=None, return_logits=False, return_feat=False,
     ):
         """Forward function for training. Add seg_weight and return_feat
 
@@ -80,6 +80,8 @@ class UDAEncoderDecoder(EncoderDecoder):
         x = self.extract_feat(img)
 
         losses = dict()
+        if return_feat:
+            losses['features'] = x
 
         loss_decode = self._decode_head_forward_train(
             x, img_metas, gt_semantic_seg, seg_weight, return_logits=return_logits
