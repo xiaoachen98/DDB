@@ -141,13 +141,13 @@ python tools/test.py {config} {weight} --eval mIoU
 Using following commands, you will receive two complementary teacher models (`cu_model` and `ca_model`)
 ```shell
 # Train on the coarse region-path (using cross-domain cut-mix for domain bridging)
-python tools/train.py configs/gtav2cityscapes/r1_st_cu_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
+python tools/train.py configs/gta2city/r1_st_cu_dlv2_r101v1c_1x4_512x512_40k_gta2city.py
 # Train on the fine class-path (using cross-domain class-mix for domain bridging)
-python tools/train.py configs/gtav2cityscapes/r1_st_ca_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
+python tools/train.py configs/gta2city/r1_st_ca_dlv2_r101v1c_1x4_512x512_40k_gta2city.py
 # Train on the coarse region-path (using cross-domain cut-mix for domain bridging) (Train with multiple GPUs)
-bash tools/dist_train.sh configs/gtav2cityscapes/r1_st_cu_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GPU_NUM=2
+bash tools/dist_train.sh configs/gta2city/r1_st_cu_dlv2_r101v1c_2x2_512x512_40k_gta2city.py 2 # GPU_NUM=2
 # Train on the fine class-path (using cross-domain class-mix for domain bridging) (Train with multiple GPUs)
-bash tools/dist_train.sh configs/gtav2cityscapes/r1_st_ca_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GPU_NUM=2
+bash tools/dist_train.sh configs/gta2city/r1_st_ca_dlv2_r101v1c_2x2_512x512_40k_gta2city.py 2 # GPU_NUM=2
 ```
 
 ### Step 2 on Round 1
@@ -158,9 +158,9 @@ After step 1, you should rename the checkpoints and put them in the checkpoints'
 DDB
 ├── ...
 ├── checkpoints
-│   ├── gta2cs_round1
-│   │   ├── gta2cs_st-cu_dlv2.pth
-│   │   ├── gta2cs_st-ca_dlv2.pth
+│   ├── gta2city_round1
+│   │   ├── gta2city_st-cu_dlv2.pth
+│   │   ├── gta2city_st-ca_dlv2.pth
 ├── ...
 ```
 If you want to use adaptive ensemble technique for cross-path knowledge distillation (CKD). You should run:
@@ -173,9 +173,22 @@ python tools/cal_prototypes/cal_prototype.py {CA_MODEL_CONFIG_DIR} --checkpoint=
 Then, you can run the following command for CKD:
 ```shell
 # Distillate the knowledge from two teacher models to a student model
-python tools/train.py configs/gtav2cityscapes/r1_ckd_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
+python tools/train.py configs/gta2city/r1_ckd_dlv2_r101v1c_1x4_512x512_40k_gta2city.py
 # Train with multiple GPUs
-bash tools/dist_train.sh configs/gtav2cityscapes/r1_ckd_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GUP_NUM=2
+bash tools/dist_train.sh configs/gta2city/r1_ckd_dlv2_r101v1c_2x2_512x512_40k_gta2city.py 2 # GUP_NUM=2
+```
+
+After step 2, you should rename the checkpoints and put it in the checkpoints' folder manually. Such as:
+
+```none
+DDB
+├── ...
+├── checkpoints
+│   ├── gta2city_round1
+│   │   ├── gta2city_st-cu_dlv2.pth
+│   │   ├── gta2city_st-ca_dlv2.pth
+│   │   ├── gta2city_ckd-pro_dlv2.pth
+├── ...
 ```
 
 ### Step 1 on Round 2
@@ -209,9 +222,9 @@ python tools/cal_prototypes/cal_prototype.py {CA_MODEL_CONFIG_DIR} --checkpoint=
 Then, you can run the following command for CKD:
 ```shell
 # Distillate the knowledge from two teacher models to a student model
-python tools/train.py configs/gtav2cityscapes/r2_ckd_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
+python tools/train.py configs/gta2city/r2_ckd_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
 # Train with multiple GPUs
-bash tools/dist_train.sh configs/gtav2cityscapes/r2_ckd_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GUP_NUM=2
+bash tools/dist_train.sh configs/gta2city/r2_ckd_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GUP_NUM=2
 ```
 
 ## Acknowledgment
