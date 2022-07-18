@@ -2,42 +2,38 @@ import argparse
 import json
 import os.path as osp
 
-import cityscapesscripts.helpers.labels as CSLabels
+import cv2
 import mmcv
 import numpy as np
 from PIL import Image
 
-palette = np.zeros((len(CSLabels.id2label), 3), dtype=np.uint8)
-for label_id, label in CSLabels.id2label.items():
-    palette[label_id] = label.color
-id_to_trainid = {
-    7: 0,
-    8: 1,
-    11: 2,
-    12: 3,
-    13: 4,
-    17: 5,
-    19: 6,
-    20: 7,
-    21: 8,
-    22: 9,
-    23: 10,
-    24: 11,
-    25: 12,
-    26: 13,
-    27: 14,
-    28: 15,
-    31: 16,
-    32: 17,
-    33: 18
-}
-
 
 def convert_to_train_id(file):
     # re-assign labels to match the format of Cityscapes
-    pil_label = Image.open(file)
-    label = np.asarray(pil_label)
-
+    # PIL does not work with the image format, but cv2 does
+    label = cv2.imread(file, cv2.IMREAD_UNCHANGED)[:, :, -1]
+    # mapping based on README.txt from SYNTHIA_RAND_CITYSCAPES
+    id_to_trainid = {
+        3: 0,
+        4: 1,
+        2: 2,
+        21: 3,
+        5: 4,
+        7: 5,
+        15: 6,
+        9: 7,
+        6: 8,
+        16: 9,  # not present in synthia
+        1: 10,
+        10: 11,
+        17: 12,
+        8: 13,
+        18: 14,  # not present in synthia
+        19: 15,
+        20: 16,  # not present in synthia
+        12: 17,
+        11: 18
+    }
     label_copy = 255 * np.ones(label.shape, dtype=np.uint8)
     sample_class_stats = {}
     for k, v in id_to_trainid.items():
@@ -46,26 +42,21 @@ def convert_to_train_id(file):
         n = int(np.sum(k_mask))
         if n > 0:
             sample_class_stats[v] = n
-    new_file = file.replace('.png', '_gt_labelTrainIds.png')
-    color_file = file.replace('.png', '_gt_color.png')
-    assert file != new_file != color_file
+    new_file = file.replace('.png', '_labelTrainIds.png')
+    assert file != new_file
     sample_class_stats['file'] = new_file
-    # save labelId and color format gt
     Image.fromarray(label_copy, mode='L').save(new_file)
-    color_label = Image.fromarray(label, mode='P')
-    color_label.putpalette(palette)
-    color_label.save(color_file)
     return sample_class_stats
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Convert Synscapes annotations to TrainIds and Color')
-    parser.add_argument('syns_path', help='synscapes data path')
-    parser.add_argument('--gt-dir', default='img/class', type=str)
+        description='Convert SYNTHIA annotations to TrainIds')
+    parser.add_argument('synthia_path', help='synthia data path')
+    parser.add_argument('--gt-dir', default='GT/LABELS', type=str)
     parser.add_argument('-o', '--out-dir', help='output path')
     parser.add_argument(
-        '--nproc', default=8, type=int, help='number of process')
+        '--nproc', default=4, type=int, help='number of process')
     args = parser.parse_args()
     return args
 
@@ -94,11 +85,11 @@ def save_class_stats(out_dir, sample_class_stats):
 
 def main():
     args = parse_args()
-    syns_path = args.syns_path
-    out_dir = args.out_dir if args.out_dir else syns_path
+    synthia_path = args.synthia_path
+    out_dir = args.out_dir if args.out_dir else synthia_path
     mmcv.mkdir_or_exist(out_dir)
 
-    gt_dir = osp.join(syns_path, args.gt_dir)
+    gt_dir = osp.join(synthia_path, args.gt_dir)
 
     poly_files = []
     for poly in mmcv.scandir(
@@ -108,12 +99,17 @@ def main():
         poly_files.append(poly_file)
     poly_files = sorted(poly_files)
 
-    if args.nproc > 1:
-        sample_class_stats = mmcv.track_parallel_progress(
-            convert_to_train_id, poly_files, args.nproc)
+    only_postprocessing = False
+    if not only_postprocessing:
+        if args.nproc > 1:
+            sample_class_stats = mmcv.track_parallel_progress(
+                convert_to_train_id, poly_files, args.nproc)
+        else:
+            sample_class_stats = mmcv.track_progress(convert_to_train_id,
+                                                     poly_files)
     else:
-        sample_class_stats = mmcv.track_progress(convert_to_train_id,
-                                                 poly_files)
+        with open(osp.join(out_dir, 'sample_class_stats.json'), 'r') as of:
+            sample_class_stats = json.load(of)
 
     save_class_stats(out_dir, sample_class_stats)
 

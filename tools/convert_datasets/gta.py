@@ -2,6 +2,7 @@
 # Aiming to convert the annotation format to be TrainId
 
 import argparse
+import json
 import os.path as osp
 
 import mmcv
@@ -35,12 +36,18 @@ def convert_to_train_id(file):
         33: 18
     }
     label_copy = 255 * np.ones(label.shape, dtype=np.uint8)
+    sample_class_stats = {}
     for k, v in id_to_trainid.items():
         k_mask = label == k
         label_copy[k_mask] = v
+        n = int(np.sum(k_mask))
+        if n > 0:
+            sample_class_stats[v] = n
     new_file = file.replace('.png', '_labelTrainIds.png')
     assert file != new_file
+    sample_class_stats['file'] = new_file
     Image.fromarray(label_copy, mode='L').save(new_file)
+    return sample_class_stats
 
 
 def parse_args():
@@ -53,6 +60,28 @@ def parse_args():
         '--nproc', default=4, type=int, help='number of process')
     args = parser.parse_args()
     return args
+
+
+def save_class_stats(out_dir, sample_class_stats):
+    with open(osp.join(out_dir, 'sample_class_stats.json'), 'w') as of:
+        json.dump(sample_class_stats, of, indent=2)
+
+    sample_class_stats_dict = {}
+    for stats in sample_class_stats:
+        f = stats.pop('file')
+        sample_class_stats_dict[f] = stats
+    with open(osp.join(out_dir, 'sample_class_stats_dict.json'), 'w') as of:
+        json.dump(sample_class_stats_dict, of, indent=2)
+
+    samples_with_class = {}
+    for file, stats in sample_class_stats_dict.items():
+        for c, n in stats.items():
+            if c not in samples_with_class:
+                samples_with_class[c] = [(file, n)]
+            else:
+                samples_with_class[c].append((file, n))
+    with open(osp.join(out_dir, 'samples_with_class.json'), 'w') as of:
+        json.dump(samples_with_class, of, indent=2)
 
 
 def main():
@@ -72,11 +101,13 @@ def main():
     poly_files = sorted(poly_files)
 
     if args.nproc > 1:
-        mmcv.track_parallel_progress(
+        sample_class_stats = mmcv.track_parallel_progress(
             convert_to_train_id, poly_files, args.nproc)
     else:
-        mmcv.track_progress(convert_to_train_id,
-                            poly_files)
+        sample_class_stats = mmcv.track_progress(convert_to_train_id,
+                                                 poly_files)
+
+    save_class_stats(out_dir, sample_class_stats)
 
 
 if __name__ == '__main__':
