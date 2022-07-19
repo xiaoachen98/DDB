@@ -1,26 +1,13 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
-checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segformer/mit_b5_20220624-658746d9.pth'  # noqa
 
 model = dict(
     type='UDAEncoderDecoder',
     pretrained=None,
     backbone=dict(
-        type='MixVisionTransformer',
-        init_cfg=dict(type='Pretrained', checkpoint=checkpoint),
-        in_channels=3,
-        embed_dims=64,
-        num_stages=4,
-        num_layers=[3, 6, 40, 3],
-        num_heads=[1, 2, 5, 8],
-        patch_sizes=[7, 3, 3, 3],
-        sr_ratios=[8, 4, 2, 1],
-        out_indices=(0, 1, 2, 3),
-        mlp_ratio=4,
-        qkv_bias=True,
-        drop_rate=0.0,
-        attn_drop_rate=0.0,
-        drop_path_rate=0.1),
+        type='mit_b5',
+        pretrained='pretrained/mit_b5.pth',
+        style='pytorch'),
     decode_head=dict(
         type='DAFormerHead',
         in_channels=[64, 128, 320, 512],
@@ -40,8 +27,9 @@ model = dict(
                 dilations=(1, 6, 12, 18),
                 pool=False,
                 act_cfg=dict(type='ReLU'),
-                norm_cfg=norm_cfg),
-        )),
+                norm_cfg=norm_cfg)),
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
