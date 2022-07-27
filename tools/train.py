@@ -125,14 +125,21 @@ def main():
 
     # work_dir is determined in this priority: CLI > segment in file > filename
     timestamp = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    if cfg.get('exp', None) is not None:
+        exp_dir = osp.join(cfg.exp, timestamp + '_' + osp.splitext(osp.basename(args.config))[0])
+    else:
+        exp_dir = timestamp + '_' + osp.splitext(osp.basename(args.config))[0]
     if args.work_dir is not None:
         # update configs according to CLI args if args.work_dir is not None
         cfg.work_dir = args.work_dir
+        cfg.work_dir = osp.join(cfg.work_dir, exp_dir)
     elif cfg.get("work_dir", None) is None:
         # use config filename as default work_dir if cfg.work_dir is None
-        cfg.work_dir = osp.join(
-            "./work_dirs", timestamp + '_' + osp.splitext(osp.basename(args.config))[0]
-        )
+        cfg.work_dir = osp.join("./work_dirs", exp_dir)
+
+    # Add for the modified training
+    cfg.model.train_cfg.work_dir = cfg.work_dir
+
     if args.load_from is not None:
         cfg.load_from = args.load_from
     if args.resume_from is not None:

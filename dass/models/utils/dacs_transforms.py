@@ -123,7 +123,7 @@ def generate_class_mask(label, classes):
     return class_mask
 
 
-def get_cut_masks(img_shape, random_aspect_ratio=True, within_bounds=True, mask_props=0.4):
+def get_cut_masks(img_shape, random_aspect_ratio=True, within_bounds=True, mask_props=0.4, device='cuda:0'):
     n, _, h, w = img_shape
     if random_aspect_ratio:
         y_props = np.exp(np.random.uniform(low=0.0, high=1, size=(n, 1)) * np.log(mask_props))
@@ -141,7 +141,7 @@ def get_cut_masks(img_shape, random_aspect_ratio=True, within_bounds=True, mask_
         rectangles = np.append(centres - sizes * 0.5, centres + sizes * 0.5, axis=2)
 
     masks = []
-    mask = torch.zeros((n, 1, h, w)).long().cuda()
+    mask = torch.zeros((n, 1, h, w), device=device).long()
     for i, sample_rectangles in enumerate(rectangles):
         y0, x0, y1, x1 = sample_rectangles[0]
         mask[i, 0, int(y0):int(y1), int(x0):int(x1)] = 1
@@ -149,11 +149,18 @@ def get_cut_masks(img_shape, random_aspect_ratio=True, within_bounds=True, mask_
     return masks
 
 
-def get_masks(img_shape, labels, mask_type='class', cut_mask_props=0.4):
+def get_masks(img_shape, labels, mask_type='class', mask_props='constant'):
+    dev = labels.device
+    assert mask_props in ['constant', 'random']
     if mask_type == 'class':
         return get_class_masks(labels)
     elif mask_type == 'cut':
-        return get_cut_masks(img_shape, mask_props=cut_mask_props)
+        if mask_props == 'constant':
+            cut_mask_props = 0.4
+        else:
+            # cut_mask_props = np.random.beta(0.5, 0.5, img_shape[0])
+            cut_mask_props = np.random.beta(5, 5, img_shape[0])
+        return get_cut_masks(img_shape, mask_props=cut_mask_props, device=dev)
     else:
         raise ValueError
 
