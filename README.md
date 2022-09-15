@@ -25,7 +25,8 @@ If you find our work useful and use the code or models for your research, please
 }
 ```
 ## News
-### 2022.07.02 Release paper on ArXiv and code on github.
+### 2022.09.15 We are happy to announce that DDB was accepted at NeurIPS2022✨ 
+### 2022.07.02 Release code on github.
 
 ## Abstract
 >In unsupervised domain adaptation (UDA), directly adapting from the source to the target domain usually suffers significant discrepancies and leads to insufficient alignment. 
