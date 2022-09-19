@@ -4,7 +4,7 @@ This repo is the official PyTorch implementation of Deliberated Domain Bridging 
 Semantic Segmentation (DDB).
 
 ![](resources/fig1.png)
-### [[ArXiv]]()
+### [[ArXiv]](https://arxiv.org/abs/2209.07695)
 By [Lin Chen](https://scholar.google.com/citations?user=-t92FH8AAAAJ&hl=zh-CN&oi=sra), [Zhixiang Wei](), 
 [Xin Jin](https://scholar.google.com/citations?hl=en&user=byaSC-kAAAAJ), 
 [Huaian Chen](https://scholar.google.com/citations?user=D6ol9XkAAAAJ&hl=en&oi=sra), 
