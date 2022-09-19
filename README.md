@@ -1,8 +1,11 @@
 
 ## Deliberated Domain Bridging for Domain Adaptive Semantic Segmentation
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/deliberated-domain-bridging-for-domain/domain-adaptation-on-gtav-synscapes-to)](https://paperswithcode.com/sota/domain-adaptation-on-gtav-synscapes-to?p=deliberated-domain-bridging-for-domain)
+
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/deliberated-domain-bridging-for-domain/domain-adaptation-on-gtav-to-cityscapes-1)](https://paperswithcode.com/sota/domain-adaptation-on-gtav-to-cityscapes-1?p=deliberated-domain-bridging-for-domain)
+
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/deliberated-domain-bridging-for-domain/domain-adaptation-on-gta5-to-cityscapes)](https://paperswithcode.com/sota/domain-adaptation-on-gta5-to-cityscapes?p=deliberated-domain-bridging-for-domain)
+
 This repo is the official PyTorch implementation of Deliberated Domain Bridging for Domain Adaptive
 Semantic Segmentation (DDB).
 
