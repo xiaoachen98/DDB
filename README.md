@@ -24,10 +24,10 @@ By [Lin Chen](https://scholar.google.com/citations?user=-t92FH8AAAAJ&hl=zh-CN&oi
 If you find our work useful and use the code or models for your research, please cite our work as follows:
 ```none
 @article{chen2022deliberated,
-    title={Deliberated Domain Bridging for Domain Adaptive Semantic Segmentation},
-    author={Lin, Chen and Zhixiang, Wei and Xin, Jin and Huaian, Chen and Miao, Zheng and Kai, Chen and Yi, Jin},
-    journal={arXiv preprint},
-    year={2022}
+  title={Deliberated Domain Bridging for Domain Adaptive Semantic Segmentation},
+  author={Chen, Lin and Wei, Zhixiang and Jin, Xin and Chen, Huaian and Zheng, Miao and Chen, Kai and Jin, Yi},
+  journal={arXiv preprint arXiv:2209.07695},
+  year={2022}
 }
 ```
 ## News
