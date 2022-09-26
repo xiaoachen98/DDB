@@ -48,18 +48,11 @@ def build_uda_dataset(cfg, default_args=None):
     """Build datasets."""
     from .uda_concat import UDAConcatDataset
     from .st_dataset import STDataset
-    from .uda_dataset import UDADataset
 
     if isinstance(cfg, (list, tuple)):
         dataset = UDAConcatDataset([build_uda_dataset(c, default_args) for c in cfg])
     elif cfg["type"] == "STDataset":
         dataset = STDataset(
-            source=build_uda_dataset(cfg["source"], default_args),
-            target=build_uda_dataset(cfg["target"], default_args),
-            cfg=cfg,
-        )
-    elif cfg["type"] == "UDADataset":
-        dataset = UDADataset(
             source=build_uda_dataset(cfg["source"], default_args),
             target=build_uda_dataset(cfg["target"], default_args),
             cfg=cfg,

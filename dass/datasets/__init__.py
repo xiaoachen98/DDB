@@ -1,5 +1,4 @@
 from .uda_concat import UDAConcatDataset
-from .uda_dataset import UDADataset
 from .gta import GTADataset
 from .mapillary import MapillaryDataset
 from .st_dataset import STDataset
