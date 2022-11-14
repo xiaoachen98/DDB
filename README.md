@@ -31,6 +31,7 @@ If you find our work useful and use the code or models for your research, please
 }
 ```
 ## News
+### 2022.11.14 We are happy to announce that DDB obtained the Spotlight award.✨ 
 ### 2022.09.15 We are happy to announce that DDB was accepted at NeurIPS2022✨ 
 ### 2022.09.15 Release the core code of our CVPR2022 paper [DALN](https://github.com/xiaoachen98/DALN)
 ### 2022.07.02 Release code on github.
