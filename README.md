@@ -59,7 +59,7 @@ Extensive experiments on adaptive segmentation tasks with different settings dem
  | weights/gta2cs+map/r2-ckd-pro-bs1x4/weight.pth | gta             | cityscape<br>mapillary | 60.4<br>56.9 |
 
 The above checkpoints can be obtained through
-[GoogleDrive](https://drive.google.com/drive/folders/1mdIcSrOPTgzbB8zSFtoM2pzWlB0S3mpA?usp=sharing). 
+[GoogleDrive](https://drive.google.com/drive/folders/1mdIcSrOPTgzbB8zSFtoM2pzWlB0S3mpA?usp=share_link). 
 After downloading, please put them under the project folder.
 
 ## Environment
