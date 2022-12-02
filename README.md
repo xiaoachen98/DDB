@@ -204,9 +204,9 @@ DDB
 
 ```shell
 # Self-training again with weights initialized by step2 on stage 1
-python tools/train.py configs/uda/st/gta2cs_st-cu-r2_dlv2red-adapter_r101v1c_poly10warm_s0.py
+python tools/train.py configs/gta2city/r2_st_cu_dlv2_r101v1c_1x4_512x512_40k_gta2city.py
 # Self-training again with weights initialized by step2 on stage 1
-python tools/train.py configs/uda/st/gta2cs_st-ca-r2_dlv2red-adapter_r101v1c_poly10warm_s0.py
+python tools/train.py configs/gta2city/r1_st_ca_dlv2_r101v1c_1x4_512x512_40k_gta2city.py
 ```
 ### Step 2 on Round 2
 
@@ -231,9 +231,9 @@ python tools/cal_prototypes/cal_prototype.py {CA_MODEL_CONFIG_DIR} --checkpoint=
 Then, you can run the following command for CKD:
 ```shell
 # Distillate the knowledge from two teacher models to a student model
-python tools/train.py configs/gta2city/r2_ckd_dlv2_r101v1c_1x4_512x512_40k_gtav2cityscapes.py
+python tools/train.py configs/gta2city/r2_ckd_dlv2_r101v1c_1x4_512x512_40k_gta2city.py
 # Train with multiple GPUs
-bash tools/dist_train.sh configs/gta2city/r2_ckd_dlv2_r101v1c_2x2_512x512_40k_gtav2cityscapes.py 2 # GUP_NUM=2
+bash tools/dist_train.sh configs/gta2city/r2_ckd_dlv2_r101v1c_2x2_512x512_40k_gta2city.py 2 # GUP_NUM=2
 ```
 
 ## Acknowledgment
