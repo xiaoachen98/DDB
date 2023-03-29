@@ -31,6 +31,13 @@ If you find our work useful and use the code or models for your research, please
  volume = {35},
  year = {2022}
 }
+
+@article{chen2022deliberated,
+  title={Deliberated Domain Bridging for Domain Adaptive Semantic Segmentation},
+  author={Chen, Lin and Wei, Zhixiang and Jin, Xin and Chen, Huaian and Zheng, Miao and Chen, Kai and Jin, Yi},
+  journal={arXiv preprint arXiv:2209.07695},
+  year={2022}
+}
 ```
 ## News
 ### 2022.11.14 We are happy to announce that DDB obtained the spotlight award at NeurIPS2022✨ 
